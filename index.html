@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phát nhạc theo phân cảnh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1e1e1e;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Phát nhạc theo phân cảnh</h1>
+
+    <div class="button-container">
+        <button onclick="playMusic('soundEffect/nhac-mo-dau.mp3')">Cảnh 1</button>
+        <button onclick="playMusic('soundEffect/soft-piano-100-bpm-121529.mp3')">Cảnh 2</button>
+        <button onclick="playMusic('soundEffect/motorcycle-sound-effects-sfx-179535.mp3')">Cảnh 3</button>
+        <button onclick="stopMusic()">Dừng</button>
+    </div>
+
+    <!-- Thêm controls để dễ debug; có thể bỏ khi đã chạy ổn -->
+    <audio id="audioPlayer" controls></audio>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        function playMusic(file) {
+            console.log('Yêu cầu phát:', file);
+            audioPlayer.src = file;
+            // đảm bảo trình duyệt load nguồn mới trước khi play
+            audioPlayer.load();
+            const playPromise = audioPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => {
+                    console.error('Không thể phát nhạc tự động:', err);
+                });
+            }
+        }
+
+        function stopMusic() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+        }
+
+        // Hiện thông báo lỗi nếu không load được file (ví dụ đường dẫn sai)
+        audioPlayer.addEventListener('error', (e) => {
+            console.error('Lỗi audio:', e);
+            alert('Không thể tải file âm thanh. Kiểm tra đường dẫn và console để biết chi tiết.');
+        });
+    </script>
+
+</body>
+
+</html>
