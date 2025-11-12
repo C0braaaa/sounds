@@ -13,17 +13,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            padding: 30px;
         }
 
         h1 {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .button-container {
             display: flex;
+            flex-direction: column;
+            /* sắp xếp theo cột */
             gap: 15px;
+            width: 300px;
         }
 
         button {
@@ -31,14 +33,42 @@
             font-size: 16px;
             border: none;
             border-radius: 8px;
-            background: #4caf50;
             color: white;
             cursor: pointer;
             transition: background 0.2s;
         }
 
-        button:hover {
-            background: #45a049;
+        /* màu theo loại nhạc / cảnh */
+        .intro {
+            background: #2196f3;
+        }
+
+        .intro:hover {
+            background: #1976d2;
+        }
+
+        .scene {
+            background: #4caf50;
+        }
+
+        .scene:hover {
+            background: #388e3c;
+        }
+
+        .ending {
+            background: #ff9800;
+        }
+
+        .ending:hover {
+            background: #f57c00;
+        }
+
+        .stop {
+            background: #f44336;
+        }
+
+        .stop:hover {
+            background: #d32f2f;
         }
     </style>
 </head>
@@ -48,14 +78,23 @@
     <h1>Phát nhạc theo phân cảnh</h1>
 
     <div class="button-container">
-        <button onclick="playMusic('soundEffect/nhac-mo-dau.mp3')">Cảnh 1</button>
-        <button onclick="playMusic('soundEffect/soft-piano-100-bpm-121529.mp3')">Cảnh 2</button>
-        <button onclick="playMusic('soundEffect/motorcycle-sound-effects-sfx-179535.mp3')">Cảnh 3</button>
-        <button onclick="stopMusic()">Dừng</button>
+        <button class="intro" onclick="playMusic('soundEffect/nhac-mo-dau.mp3')">Nhạc mở đầu</button>
+        <button class="scene" onclick="playMusic('soundEffect/TIẾNG TRỐNG TAN TRƯỜNG.mp3')">tiếng trống tan
+            trường</button>
+        <button class="scene" onclick="playMusic('soundEffect/motorcycle-sound-effects-sfx-179535.mp3')">tiếng rú ga xe
+            máy đi nhanh</button>
+        <button class="scene" onclick="playMusic('soundEffect/Pink Panther Theme.mp3')">nhạc lén lút, mờ ảo
+        </button>
+        <button class="scene" onclick="playMusic('soundEffect/police-siren-397963.mp3')">Còi hú</button>
+        <button class="scene" onclick="playMusic('soundEffect/soft-piano-100-bpm-121529.mp3')">Piano nhẹ, hồi
+            phục</button>
+        <button class="ending" onclick="playMusic('soundEffect/Corporate Inspiring Uplifting.mp3')">Nhạc uplifting –
+            mạnh mẽ</button>
+        <button class="stop" onclick="stopMusic()">⏹ Dừng nhạc</button>
     </div>
 
-    <!-- Thêm controls để dễ debug; có thể bỏ khi đã chạy ổn -->
-    <audio id="audioPlayer" controls></audio>
+    <!-- Audio element -->
+    <audio id="audioPlayer" controls style="margin-top: 20px; width: 100%;"></audio>
 
     <script>
         const audioPlayer = document.getElementById('audioPlayer');
@@ -63,12 +102,12 @@
         function playMusic(file) {
             console.log('Yêu cầu phát:', file);
             audioPlayer.src = file;
-            // đảm bảo trình duyệt load nguồn mới trước khi play
             audioPlayer.load();
             const playPromise = audioPlayer.play();
             if (playPromise !== undefined) {
                 playPromise.catch(err => {
                     console.error('Không thể phát nhạc tự động:', err);
+                    alert('Trình duyệt chặn autoplay. Nhấn play trên audio control.');
                 });
             }
         }
@@ -78,10 +117,9 @@
             audioPlayer.currentTime = 0;
         }
 
-        // Hiện thông báo lỗi nếu không load được file (ví dụ đường dẫn sai)
         audioPlayer.addEventListener('error', (e) => {
             console.error('Lỗi audio:', e);
-            alert('Không thể tải file âm thanh. Kiểm tra đường dẫn và console để biết chi tiết.');
+            alert('Không thể tải file âm thanh. Kiểm tra đường dẫn.');
         });
     </script>
 
